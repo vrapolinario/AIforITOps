@@ -13,7 +13,7 @@ This guide explains how to deploy the full cloud-native ecommerce solution to Az
 
 ## Before you get started
 
-All Azure resources necessary to run the sample application as well as exercises can be deployed with the scripts in the scripts folder. However, before you run them, make sure you update the variables in `env.conf`. This file will be used by the scripts to read variables like Azure Resource Group name, Azure location, etc.
+All Azure resources necessary to run the sample application as well as exercises can be deployed with the scripts in the scripts folder. However, before you run them, make sure you update the variables in `.\scripts\env.conf`. This file will be used by the scripts to read variables like Azure Resource Group name, Azure location, etc.
 
 ## 1. Provision Azure Resources
 
