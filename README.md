@@ -9,6 +9,7 @@ This guide explains how to deploy the full cloud-native ecommerce solution to Az
 - AKS, ACR, CosmosDB, Service Bus, and Key Vault resource quotas available
 - Kubernetes CLI (`kubectl`) installed
 - Docker Desktop or Docker engine installed
+- Clone this repo to a folder on your device using `git clone https://github.com/vrapolinario/AIforITOps.git`
 
 ## Before you get started
 
