@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: servicebus-config
+  namespace: ai-demo
+  labels:
+    app: ecommerce
+
+data:
+  SERVICEBUS_QUEUE_NAME: "productsqueue"

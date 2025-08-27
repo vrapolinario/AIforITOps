@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cosmosdb-config
+  namespace: ai-demo
+  labels:
+    app: ecommerce
+  
+data:
+  COSMOSDB_DATABASE_NAME: "productsdb"
+  PRODUCTS_CONTAINER_NAME: "productscontainer"
+  ORDERS_CONTAINER_NAME: "orderscontainer"

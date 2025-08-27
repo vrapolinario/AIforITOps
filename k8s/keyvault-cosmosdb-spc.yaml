@@ -1,0 +1,18 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: keyvault-cosmosdb
+  namespace: ai-demo
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    userAssignedIdentityID: <MANAGED_IDENTITY_CLIENT_ID>
+    keyvaultName: <YOUR_KEYVAULT_NAME>
+    objects:  |
+      array:
+        - |
+          objectName: CosmosDBConnectionString
+          objectType: secret
+    tenantId: <YOUR_TENANT_ID>

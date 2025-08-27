@@ -1,0 +1,44 @@
+@page
+@model StoreFront.Pages.CartModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Shopping Cart</h1>
+@if (Model.CartItems.Count > 0)
+{
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>$@item.Product.Price</td>
+                <td>@item.Quantity</td>
+                <td>$@(item.Product.Price * item.Quantity)</td>
+                <td>
+                    <form method="post" asp-page-handler="Increase" asp-route-id="@item.Product.id" style="display:inline;">
+                        <button type="submit">+</button>
+                    </form>
+                    <form method="post" asp-page-handler="Remove" asp-route-id="@item.Product.id" style="display:inline;">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td
+            </tr>
+        }
+    </table>
+    <h3>Grand Total: $@Model.CartItems.Sum(i => i.Product.Price * i.Quantity)</h3>
+    <form method="post" asp-page-handler="Checkout">
+        <button type="submit">Checkout</button>
+    </form>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}

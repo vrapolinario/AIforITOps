@@ -1,0 +1,38 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<h1>Store Front</h1>
+<div style="margin-bottom:16px;"><a asp-page="Cart">View Cart / Checkout</a></div>
+<div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
+    @if (Model.Products != null && Model.Products.Count > 0)
+    {
+        foreach (var product in Model.Products)
+        {
+            <div class="product-card" style="border: 1px solid #ccc; padding: 16px; border-radius: 8px; text-align: center;">
+                <a asp-page="ProductDetails" asp-route-id="@product.id">
+                    @if (product.ImageData != null && product.ImageData.Length > 0)
+                    {
+                        <img src="@("data:image/png;base64," + Convert.ToBase64String(product.ImageData))" alt="@product.Name" style="width:120px; height:120px; object-fit:cover; margin-bottom:8px;" />
+                    }
+                    else
+                    {
+                        <div style="width:120px; height:120px; background:#eee; margin-bottom:8px; display:flex; align-items:center; justify-content:center;">No Image</div>
+                    }
+                    <h3>@product.Name</h3>
+                </a>
+                <p><strong>Price:</strong> $@product.Price</p>
+                <form method="post" asp-page="ProductDetails" asp-route-id="@product.id">
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No products available.</p>
+    }
+</div>
