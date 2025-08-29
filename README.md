@@ -97,3 +97,4 @@ Copy the IP addresses and paste it into a web browser. You will need one tab for
 
 1. Add instructions for workshop for AI for IT/Ops
 2. Add architecture diagram to this readme.md file
+3. Include error handling on all PowerShell scripts
