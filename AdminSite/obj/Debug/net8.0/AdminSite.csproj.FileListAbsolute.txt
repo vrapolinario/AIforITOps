@@ -1,0 +1,10 @@
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.csproj.AssemblyReference.cache
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.GeneratedMSBuildEditorConfig.editorconfig
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.AssemblyInfoInputs.cache
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.AssemblyInfo.cs
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.csproj.CoreCompileInputs.cache
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.MvcApplicationPartsAssemblyInfo.cache
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.RazorAssemblyInfo.cache
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.RazorAssemblyInfo.cs
+C:\GitHub\AIforITOps\AdminSite\obj\Debug\net8.0\AdminSite.sourcelink.json

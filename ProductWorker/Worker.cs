@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 namespace ProductWorker;
 
 
@@ -116,12 +118,13 @@ public class Worker : BackgroundService
 
     public class Product
     {
-        public string id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public string ImageUrl { get; set; }
-        public int Quantity { get; set; }
+    public string id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public decimal Price { get; set; }
+    [JsonConverter(typeof(JsonBase64ByteArrayConverter))]
+    public byte[] ImageData { get; set; }
+    public int Quantity { get; set; }
     }
 
     public class OrderMessage

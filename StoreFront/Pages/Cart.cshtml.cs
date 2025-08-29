@@ -36,6 +36,12 @@ public class CartModel : PageModel
     {
         // Checkout logic: save order to CosmosDB
         var cart = GetCartFromSession();
+        // Diagnostic logging for image data
+        foreach (var item in cart)
+        {
+            var imgLen = item.Product.ImageData != null ? item.Product.ImageData.Length : 0;
+            System.Diagnostics.Debug.WriteLine($"[CHECKOUT] Product ID: {item.Product.id}, ImageData Length: {imgLen}");
+        }
         if (cart.Count > 0)
         {
             var connStr = System.IO.File.ReadAllText("/mnt/secrets-store/CosmosDBConnectionString");

@@ -11,7 +11,11 @@
     </div>
     <div>
         <label>Description:</label>
-        <input asp-for="Product.Description" />
+        <div style="display:flex;align-items:center;gap:8px;">
+            <textarea asp-for="Product.Description" id="descBox" rows="6" cols="60" style="resize:vertical;width:100%;"></textarea>
+            <button type="button" id="aiGenBtn">AI generated description</button>
+            <!-- Removed OpenAI endpoint display -->
+        </div>
     </div>
     <div>
         <label>Price:</label>
@@ -26,4 +30,36 @@
         <input asp-for="Product.Quantity" type="number" min="0" />
     </div>
     <button type="submit">Add</button>
+<script>
+
+document.getElementById('aiGenBtn').onclick = async function() {
+    const name = document.querySelector('[name="Product.Name"]').value;
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Generating...';
+    console.log('AI description request started:', name);
+    try {
+        const resp = await fetch('/AddProduct?handler=GenerateDescription', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+        console.log('AI description response status:', resp.status);
+        if (resp.ok) {
+            const data = await resp.json();
+            console.log('AI description response data:', data);
+            document.getElementById('descBox').value = data.description;
+        } else {
+            const errorText = await resp.text();
+            console.error('Failed to generate description:', errorText);
+            alert('Failed to generate description');
+        }
+    } catch (err) {
+        console.error('Error calling AI service:', err);
+        alert('Error calling AI service');
+    }
+    btn.disabled = false;
+    btn.textContent = 'AI generated description';
+};
+</script>
 </form>

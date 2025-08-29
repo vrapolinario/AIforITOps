@@ -1,39 +1,5 @@
 # DO NOT RUN THIS SCRIPT DIRECTLY FROM THE SHELL.
 # This script is intended to be used for troubleshooting purposes.
-# Load variables from env.conf
-$envFile = Join-Path $PSScriptRoot 'env.conf'
-if (!(Test-Path $envFile)) {
-	Write-Error "Environment file env.conf not found in $PSScriptRoot."
-	exit 1
-}
-$envVars = @{}
-foreach ($line in Get-Content $envFile) {
-	if ($line -match '^(\w+)=(.+)$') {
-		$envVars[$matches[1]] = $matches[2]
-	}
-}
-$resourceGroup = $envVars['RESOURCE_GROUP']
-$location = $envVars['LOCATION']
-$aksName = $envVars['AKS_NAME']
-$acrName = $envVars['ACR_NAME']
-$registry = $envVars['REGISTRY']
-$storefrontImage = $envVars['STOREFRONT_IMAGE']
-$adminsiteImage = $envVars['ADMINSITE_IMAGE']
-$productworkerImage = $envVars['PRODUCTWORKER_IMAGE']
-$nodePoolName = $envVars['NODEPOOL_NAME']
-
-# Build images
-docker build -t $storefrontImage -f ./StoreFront/Dockerfile .
-docker build -t $adminsiteImage -f ./AdminSite/Dockerfile .
-docker build -t $productworkerImage -f ./ProductWorker/Dockerfile .
-
-# Login to Azure Container Registry
-az acr login --name $acrName
-
-# Push images
-docker push $storefrontImage
-docker push $adminsiteImage
-docker push $productworkerImage
 
 #Delete pods running the workloads (for troubleshooting purposes)
 #Look for the adminsite-deployment pod
@@ -49,14 +15,17 @@ $productworkerPod = kubectl get pods -n ai-demo -l app=productworker -o jsonpath
 kubectl delete pod $productworkerPod -n ai-demo
 
 #Remove all Kubernetes resources if needed
-kubectl delete namespace ai-demo --wait=false
+kubectl delete namespace ai-demo
 
-#Deploy apps
+#Deploy K8s specs
 kubectl create namespace ai-demo
 kubectl apply -f ./k8s/cosmosdb-configmap.yaml
 kubectl apply -f ./k8s/servicebus-configmap.yaml
 kubectl apply -f ./k8s/keyvault-cosmosdb-spc.final.yaml
 kubectl apply -f ./k8s/keyvault-servicebus-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-openai-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-openai-key-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-openai-deployment-spc.final.yaml
 kubectl apply -f ./k8s/storefront-deployment.yaml
 kubectl apply -f ./k8s/storefront-service.yaml
 kubectl apply -f ./k8s/adminsite-deployment.yaml

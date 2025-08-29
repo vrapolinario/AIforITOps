@@ -11,10 +11,9 @@ foreach ($line in Get-Content $envFile) {
     }
 }
 $resourceGroup = $envVars['RESOURCE_GROUP']
-$aksName = $envVars['AKS_NAME']
+$openaiResourceName = $envVars['OPENAI_RESOURCE_NAME']
 
 Write-Host "Querying Azure resources in resource group: $resourceGroup..."
-
 
 # Query CosmosDB (SQL API)
 $cosmosAccount = $(az cosmosdb list --resource-group $resourceGroup --query "[0].name" -o tsv 2>$null)
@@ -27,9 +26,21 @@ $serviceBusConnStr = $(az servicebus namespace authorization-rule keys list --re
 # Query Key Vault
 $keyVaultName = az keyvault list --resource-group $resourceGroup --query "[0].name" -o tsv
 
+# Query Azure OpenAI endpoint
+$openaiEndpoint = az cognitiveservices account show --name $openaiResourceName --resource-group $resourceGroup --query "properties.endpoint" -o tsv
+
+# Query API key
+$openaiApiKey = az cognitiveservices account keys list --name $openaiResourceName --resource-group $resourceGroup --query "key1" -o tsv
+
+# Query OpenAI deployment name
+$openaideployment = az cognitiveservices account deployment list --resource-group $resourceGroup --name $openaiResourceName --query "[].name" -o tsv
+
 Write-Host "Uploading secrets to Key Vault: $keyVaultName"
 
 az keyvault secret set --vault-name $keyVaultName --name "CosmosDBConnectionString" --value "$cosmosConnStr" >$null 2>$null
 az keyvault secret set --vault-name $keyVaultName --name "ServiceBusConnectionString" --value "$serviceBusConnStr" >$null 2>$null
+az keyvault secret set --vault-name $keyVaultName --name "OpenAIAPIKey" --value "$openaiApiKey" >$null 2>$null
+az keyvault secret set --vault-name $keyVaultName --name "OpenAIEndpoint" --value "$openaiEndpoint" >$null 2>$null
+az keyvault secret set --vault-name $keyVaultName --name "OpenAIDeploymentName" --value "$openaideployment" >$null 2>$null
 
 Write-Host "Secrets uploaded successfully."
