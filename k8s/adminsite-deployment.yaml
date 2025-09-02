@@ -19,7 +19,7 @@ spec:
         workload: "true"
       containers:
       - name: adminsite
-        image: viniapaidemoacr.azurecr.io/adminsite:latest
+        image: <your_acrname>.azurecr.io/adminsite:latest
         ports:
         - containerPort: 80
         resources:

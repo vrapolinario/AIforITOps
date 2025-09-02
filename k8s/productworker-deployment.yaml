@@ -19,7 +19,7 @@ spec:
         workload: "true"
       containers:
       - name: productworker
-        image: viniapaidemoacr.azurecr.io/productworker:latest
+        image: <your_acrname>.azurecr.io/productworker:latest
         resources:
           requests:
             cpu: "100m"

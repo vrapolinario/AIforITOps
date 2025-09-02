@@ -19,7 +19,7 @@ spec:
         workload: "true"
       containers:
       - name: storefront
-        image: viniapaidemoacr.azurecr.io/storefront:latest
+        image: <your_acrname>.azurecr.io/storefront:latest
         ports:
         - containerPort: 80
         resources:

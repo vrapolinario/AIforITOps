@@ -14,6 +14,7 @@ foreach ($line in Get-Content $envFile) {
 $resourceGroup = $envVars['RESOURCE_GROUP']
 $aksName = $envVars['AKS_NAME']
 $keyVaultName = $envVars['KEYVAULT_NAME']
+$acrName = $envVars['ACR_NAME']
 
 # Query Azure for tenantId and subscriptionId
 $azInfo = az account show --query "{tenantId:tenantId, subscriptionId:id}" -o json | ConvertFrom-Json
@@ -72,3 +73,14 @@ $openaideploymentYaml = $openaideploymentYaml -replace '<MANAGED_IDENTITY_CLIENT
 Set-Content $openaideploymentYamlFinalPath $openaideploymentYaml
 
 Write-Host "Updated SecretProviderClass YAMLs created in k8s folder."
+
+# Get all deployment YAML files in the k8s folder
+$deploymentFiles = Get-ChildItem -Path "$PSScriptRoot/../k8s" -Filter "*-deployment.yaml"
+
+foreach ($file in $deploymentFiles) {
+	$content = Get-Content $file.FullName -Raw
+	$updated = $content -replace '<your_acrname>', $acrName
+	Set-Content -Path $file.FullName -Value $updated
+}
+
+Write-Host "All deployments in k8s folder have been updated with the correct container image."
