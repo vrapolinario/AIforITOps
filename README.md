@@ -10,7 +10,19 @@ This guide explains how to deploy the full cloud-native ecommerce solution to Az
 - Kubernetes CLI (`kubectl`) installed
 - Docker Desktop or Docker engine installed
 - Appropriate Azure quota for all the services used in this workshop
-- Clone this repo to a folder on your device using `git clone https://github.com/vrapolinario/AIforITOps.git`
+- Clone this repo to a folder on your device using `git clone https://github.com/vrapolinario/AIforITOps.git`.
+
+## Application and Azure architecture
+
+The sample app used in this workshop emulates an e-commerce platform. While extremely simple, the sample app leverages many architectural and security best-practices, like: micro-services, service queues, secrets for connection strings and Keys, etc.
+
+The e-commerce portion of the app is describes in this architecture diagram:
+
+![App Architecture](./images/AppArchitecture.png)
+
+The Azure services utilized in the sample application and their relationship is described in the following architectural diagram:
+
+![Azure Architecture](./images/AzureArchitecture.png)
 
 ## Before you get started
 
@@ -93,8 +105,8 @@ kubectl get svc adminsite -n ai-demo -o jsonpath="{.status.loadBalancer.ingress[
 
 Copy the IP addresses and paste it into a web browser. You will need one tab for each IP address.
 
-## To-Do
+## Workshop
 
-1. Add instructions for workshop for AI for IT/Ops
-2. Add architecture diagram to this readme.md file
-3. Include error handling on all PowerShell scripts
+Note: Make sure the environment is up and running before you start this section.
+
+Once the environment has been deployed and you were able to open and use the application, we can start explore some IT/Ops related tasks.
