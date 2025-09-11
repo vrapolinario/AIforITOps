@@ -23,7 +23,8 @@
                     <ul>
                     @foreach (var item in order.Items)
                     {
-                        <li>@item.Product.Name (x@(item.Quantity))</li>
+                        var name = Model.ProductNames.ContainsKey(item.ProductId) ? Model.ProductNames[item.ProductId] : "Unknown";
+                        <li>@name (x@(item.Quantity))</li>
                     }
                     </ul>
                 </td>

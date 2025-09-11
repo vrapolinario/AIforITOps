@@ -58,14 +58,26 @@ public class CartModel : PageModel
             };
             container.UpsertItemAsync(order, new Microsoft.Azure.Cosmos.PartitionKey(order.id)).GetAwaiter().GetResult();
 
-            // Send order to Service Bus for inventory update
+            // Prepare lightweight DTO for Service Bus
+            var orderMessage = new OrderMessageDTO
+            {
+                id = order.id,
+                Total = order.Total,
+                CreatedAt = order.CreatedAt,
+                Items = order.Items.Select(i => new OrderProductDTO
+                {
+                    ProductId = i.Product.id,
+                    Quantity = i.Quantity
+                }).ToList()
+            };
+
             var serviceBusConnStr = System.IO.File.ReadAllText("/mnt/secrets-store-sb/ServiceBusConnectionString");
             var queueName = Environment.GetEnvironmentVariable("SERVICEBUS_QUEUE_NAME");
             if (!string.IsNullOrEmpty(serviceBusConnStr) && !string.IsNullOrEmpty(queueName))
             {
                 var clientBus = new Azure.Messaging.ServiceBus.ServiceBusClient(serviceBusConnStr);
                 var sender = clientBus.CreateSender(queueName);
-                var orderJson = System.Text.Json.JsonSerializer.Serialize(order);
+                var orderJson = System.Text.Json.JsonSerializer.Serialize(orderMessage);
                 var message = new Azure.Messaging.ServiceBus.ServiceBusMessage(orderJson);
                 sender.SendMessageAsync(message).GetAwaiter().GetResult();
             }

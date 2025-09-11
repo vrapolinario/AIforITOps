@@ -52,16 +52,16 @@ public class Worker : BackgroundService
         // Try to deserialize as Order message first
         try
         {
-            var order = System.Text.Json.JsonSerializer.Deserialize<OrderMessage>(body);
+            var order = System.Text.Json.JsonSerializer.Deserialize<OrderMessageDTO>(body);
             if (order != null && order.Items != null)
             {
                 // Save order to Orders container
                 await _ordersContainer.UpsertItemAsync(order);
                 foreach (var item in order.Items)
                 {
-                    _logger.LogInformation($"Processing order item: ProductId={item.Product.id}, Quantity={item.Quantity}");
+                    _logger.LogInformation($"Processing order item: ProductId={item.ProductId}, Quantity={item.Quantity}");
                     // Get product from Products container
-                    var response = await _productsContainer.ReadItemAsync<Product>(item.Product.id, new Microsoft.Azure.Cosmos.PartitionKey(item.Product.id));
+                    var response = await _productsContainer.ReadItemAsync<Product>(item.ProductId, new Microsoft.Azure.Cosmos.PartitionKey(item.ProductId));
                     var product = response.Resource;
                     // Decrement quantity
                     int oldQty = product.Quantity;
@@ -127,17 +127,17 @@ public class Worker : BackgroundService
     public int Quantity { get; set; }
     }
 
-    public class OrderMessage
+    public class OrderMessageDTO
     {
         public string id { get; set; }
-        public List<CartItem> Items { get; set; }
+        public List<OrderProductDTO> Items { get; set; }
         public decimal Total { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 
-    public class CartItem
+    public class OrderProductDTO
     {
-        public Product Product { get; set; }
+        public string ProductId { get; set; }
         public int Quantity { get; set; }
     }
 }
