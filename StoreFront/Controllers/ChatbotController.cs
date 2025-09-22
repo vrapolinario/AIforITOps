@@ -39,7 +39,7 @@ namespace StoreFront.Controllers
                     var payload = new
                     {
                         messages = new[] {
-                            new { role = "system", content = "You are a helpful assistant for the StoreFront. Answer user questions as best you can." },
+                            new { role = "system", content = "You are a helpful assistant for the StoreFront. Only answer questions about furniture products sold in the store. If asked about anything else, reply: 'Sorry, I can only answer questions about furniture products.'" },
                             new { role = "user", content = request.Question }
                         },
                         max_tokens = 256
