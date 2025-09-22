@@ -26,12 +26,7 @@ az acr create --resource-group $resourceGroup --name $acrName --sku Basic --loca
 # Login to Azure Container Registry
 az acr login --name $acrName
 
-# Build images
-docker build -t $storefrontImage -f ./StoreFront/Dockerfile .
-docker build -t $adminsiteImage -f ./AdminSite/Dockerfile .
-docker build -t $productworkerImage -f ./ProductWorker/Dockerfile .
-
-# Push images
-docker push $storefrontImage
-docker push $adminsiteImage
-docker push $productworkerImage
+# Build images in Azure Container Registry
+az acr build --registry $acrName --image $storefrontImage --file ./StoreFront/Dockerfile ./StoreFront
+az acr build --registry $acrName --image $adminsiteImage --file ./AdminSite/Dockerfile ./AdminSite
+az acr build --registry $acrName --image $productworkerImage --file ./ProductWorker/Dockerfile ./ProductWorker
