@@ -10,6 +10,8 @@ For requests of new scenarios or issues with the workshop, please use the Issues
 - Azure CLI installed and logged in
 - AKS, ACR, CosmosDB, Service Bus, and Key Vault resource quotas available
 - Kubernetes CLI (`kubectl`) installed
+- Git CLI (`git`) installed
+- Azure CLI (`az`) installed
 - Appropriate Azure quota for all the services used in this workshop
 - Clone this repo to a folder on your device using `git clone https://github.com/vrapolinario/AIforITOps.git`.
 
