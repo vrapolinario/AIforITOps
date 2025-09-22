@@ -2,13 +2,14 @@
 
 This guide explains how to deploy the full cloud-native ecommerce solution to Azure using AKS, CosmosDB, Service Bus, Azure Key Vault, and secure secret management.
 
+For requests of new scenarios or issues with the workshop, please use the Issues tab to open a GitHub issue. We will do our best to look at all issues regularly.
+
 ## Prerequisites
 
 - Azure subscription
 - Azure CLI installed and logged in
 - AKS, ACR, CosmosDB, Service Bus, and Key Vault resource quotas available
 - Kubernetes CLI (`kubectl`) installed
-- Docker Desktop or Docker engine installed
 - Appropriate Azure quota for all the services used in this workshop
 - Clone this repo to a folder on your device using `git clone https://github.com/vrapolinario/AIforITOps.git`.
 
@@ -34,7 +35,7 @@ All Azure resources necessary to run the application as well as exercises can be
 
 ### 1.1 Create Azure Container Registry and Docker images
 
-On an Azure authenticated PowerShell session, run `.\scripts\create-acr-images.ps1`. This script will create a new Resource Group - and so should be the first to run. Next, the script will create the container registry and login to that registry. Next the script will build the container images for the application and push those images to the registry.
+On an Azure authenticated PowerShell session, run `.\scripts\create-acr-images.ps1`. This script will create a new Resource Group - and so should be the first to run. Next, the script will create the Azure Container Registry (ACR) and login to that registry. Next the script will build the container images for the application. The build process uses ACR Tasks so the images are automatically stored in the registry.
 
 ### 1.2 Create Azure Kubernetes Service
 
