@@ -18,15 +18,7 @@ $storefrontImage = $envVars['STOREFRONT_IMAGE']
 $adminsiteImage = $envVars['ADMINSITE_IMAGE']
 $productworkerImage = $envVars['PRODUCTWORKER_IMAGE']
 
-# Login to Azure Container Registry
-az acr login --name $acrName
-
-# Build images
-docker build -t $storefrontImage -f ./StoreFront/Dockerfile .
-docker build -t $adminsiteImage -f ./AdminSite/Dockerfile .
-docker build -t $productworkerImage -f ./ProductWorker/Dockerfile .
-
-# Push images
-docker push $storefrontImage
-docker push $adminsiteImage
-docker push $productworkerImage
+# Rebuild images in Azure Container Registry
+az acr build --registry $acrName --image $storefrontImage --file ./StoreFront/Dockerfile .
+az acr build --registry $acrName --image $adminsiteImage --file ./AdminSite/Dockerfile .
+az acr build --registry $acrName --image $productworkerImage --file ./ProductWorker/Dockerfile .
