@@ -59,6 +59,15 @@ spec:
         - name: secrets-store-sb
           mountPath: /mnt/secrets-store-sb
           readOnly: true
+        - name: secrets-store-openai
+          mountPath: /mnt/secrets-store-openai
+          readOnly: true
+        - name: secrets-store-openai-key
+          mountPath: /mnt/secrets-store-openai-key
+          readOnly: true
+        - name: secrets-store-openai-deployment
+          mountPath: /mnt/secrets-store-openai-deployment
+          readOnly: true
       volumes:
       - name: secrets-store
         csi:
@@ -72,3 +81,21 @@ spec:
           readOnly: true
           volumeAttributes:
             secretProviderClass: keyvault-servicebus
+      - name: secrets-store-openai
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: keyvault-openai
+      - name: secrets-store-openai-key
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: keyvault-openai-key
+      - name: secrets-store-openai-deployment
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: keyvault-openai-deployment
