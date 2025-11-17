@@ -1,0 +1,40 @@
+@page
+@model AdminModel
+@{
+    ViewData["Title"] = "Admin - Manage Products";
+}
+<h1>Admin - Manage Products</h1>
+<a asp-page="AddProduct">Add New Product</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var product in Model.Products)
+    {
+        <tr>
+            <td>@product.Name</td>
+            <td>@product.Description</td>
+            <td>$@product.Price</td>
+            <td>
+                @if (product.ImageData != null && product.ImageData.Length > 0)
+                {
+                    <img src="@("data:image/png;base64," + Convert.ToBase64String(product.ImageData))" alt="@product.Name" style="width:50px; height:50px; object-fit:cover;" />
+                }
+                else
+                {
+                    <span>No Image</span>
+                }
+            </td>
+            <td>@product.Quantity</td>
+            <td>
+                <a asp-page="EditProduct" asp-route-id="@product.id">Edit</a> |
+                <a asp-page="DeleteProduct" asp-route-id="@product.id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

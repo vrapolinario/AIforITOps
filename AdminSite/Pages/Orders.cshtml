@@ -1,0 +1,38 @@
+@page
+@model OrdersModel
+@{
+    ViewData["Title"] = "Orders";
+}
+<h1>Orders</h1>
+@if (Model.Orders.Count > 0)
+{
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Items</th>
+        </tr>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.id</td>
+                <td>@order.CreatedAt.ToString("g")</td>
+                <td>$@order.Total</td>
+                <td>
+                    <ul>
+                    @foreach (var item in order.Items)
+                    {
+                        var name = Model.ProductNames.ContainsKey(item.ProductId) ? Model.ProductNames[item.ProductId] : "Unknown";
+                        <li>@name (x@(item.Quantity))</li>
+                    }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>No orders found.</p>
+}
