@@ -1,0 +1,29 @@
+@page "{id}"
+@model StoreFront.Pages.ProductDetailsModel
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+@if (Model.Product != null)
+{
+    <div class="product-details">
+        <h2>@Model.Product.Name</h2>
+        @if (Model.Product.ImageData != null && Model.Product.ImageData.Length > 0)
+        {
+            <img src="@("data:image/png;base64," + Convert.ToBase64String(Model.Product.ImageData))" alt="@Model.Product.Name" style="width:200px; height:200px; object-fit:cover;" />
+        }
+        else
+        {
+            <div style="width:200px; height:200px; background:#eee; display:flex; align-items:center; justify-content:center;">No Image</div>
+        }
+        <p>@Model.Product.Description</p>
+        <p><strong>Price:</strong> $@Model.Product.Price</p>
+        <form method="post">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+}
+else
+{
+    <p>Product not found.</p>
+}
