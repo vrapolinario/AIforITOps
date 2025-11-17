@@ -113,3 +113,5 @@ Copy the IP addresses and paste it into a web browser. You will need one tab for
 Note: Make sure the environment is up and running before you start this section.
 
 Once the environment has been deployed and you were able to open and use the application, we can start explore some IT/Ops related tasks.
+
+Download the AI for ITOps presentation here: https://aka.ms/ignite25/prel19-slides
