@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productworker
+  namespace: ai-demo
+  labels:
+    app: productworker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productworker
+  template:
+    metadata:
+      labels:
+        app: productworker
+    spec:
+      nodeSelector:
+        workload: "true"
+      containers:
+      - name: productworker
+        image: <your_acrname>.azurecr.io/productworker:latest
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: COSMOSDB_DATABASE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: cosmosdb-config
+              key: COSMOSDB_DATABASE_NAME
+        - name: PRODUCTS_CONTAINER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: cosmosdb-config
+              key: PRODUCTS_CONTAINER_NAME
+        - name: ORDERS_CONTAINER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: cosmosdb-config
+              key: ORDERS_CONTAINER_NAME
+        - name: SERVICEBUS_QUEUE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: servicebus-config
+              key: SERVICEBUS_QUEUE_NAME
+        volumeMounts:
+        - name: secrets-store
+          mountPath: /mnt/secrets-store
+          readOnly: true
+        - name: secrets-store-sb
+          mountPath: /mnt/secrets-store-sb
+          readOnly: true
+      volumes:
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: keyvault-cosmosdb
+      - name: secrets-store-sb
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: keyvault-servicebus
