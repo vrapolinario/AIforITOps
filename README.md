@@ -1,6 +1,8 @@
 # AI for IT/Ops workshop
 
-This guide explains how to deploy the full cloud-native ecommerce solution to Azure using AKS, CosmosDB, Service Bus, Azure Key Vault, and secure secret management.
+Welcome to the AI for IT/Ops workshop! This repository contains all the materials necessary to deploy and run the AI for IT/Ops workshop. If you have the sample application from this repository ready, or just want to check the workshop instructions, jump to the [Workshop folder's ReadMe.md](./Workshop/ReadMe.md) file.
+
+The guide below explains how to deploy the full cloud-native e-commerce solution to Azure using AKS, CosmosDB, Service Bus, Azure Key Vault, and secure secret management.
 
 For requests of new scenarios or issues with the workshop, please use the Issues tab to open a GitHub issue. We will do our best to look at all issues regularly.
 
