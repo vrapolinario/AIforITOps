@@ -15,7 +15,7 @@ For requests of new scenarios or issues with the workshop, please use the Issues
 - Git CLI (`git`) installed
 - Azure CLI (`az`) installed
 - Appropriate Azure quota for all the services used in this workshop
-- Clone this repo to a folder on your device using `git clone https://github.com/vrapolinario/AIforITOps.git`.
+- Clone this repo to a folder on your device using `git clone https://github.com/microsoft/AIforITOps.git`.
 
 ## Application and Azure architecture
 
