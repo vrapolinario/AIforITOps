@@ -1,0 +1,10 @@
+{
+  "resourcesResourceGroups": "rg-",
+  "managedIdentityUserAssignedIdentities": "id-",
+  "containerRegistryRegistries": "cr",
+  "containerServiceManagedClusters": "aks-",
+  "documentDBDatabaseAccounts": "cosmos-",
+  "serviceBusNamespaces": "sb-",
+  "keyVaultVaults": "kv-",
+  "cognitiveServicesAccounts": "cog-"
+}
