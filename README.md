@@ -12,7 +12,7 @@ For requests of new scenarios or issues with the workshop, please use the Issues
 
 ## Prerequisites
 
-- Azure subscription
+- Azure subscription - you can obtain a free trial from [Azure Free Trial](https://aka.ms/azure-free-account) 
 - Azure Developer CLI (azd) installed and logged in
 - PowerShell 7.x installed (if using PowerShell scripts)
 - Azure CLI (`az`) installed and logged in
