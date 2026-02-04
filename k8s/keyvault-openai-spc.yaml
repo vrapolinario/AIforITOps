@@ -8,11 +8,12 @@ spec:
   parameters:
     usePodIdentity: "false"
     useVMManagedIdentity: "true"
-    userAssignedIdentityID: <MANAGED_IDENTITY_CLIENT_ID>
-    keyvaultName: <YOUR_KEYVAULT_NAME>
+    userAssignedIdentityID: ${MANAGED_IDENTITY_CLIENT_ID}
+    keyvaultName: ${KEY_VAULT_NAME}
     objects:  |
       array:
         - |
-          objectName: OpenAIEndpoint
+          objectName: openai-endpoint
           objectType: secret
-    tenantId: <YOUR_TENANT_ID>
+          objectAlias: OpenAIEndpoint
+    tenantId: ${TENANT_ID}

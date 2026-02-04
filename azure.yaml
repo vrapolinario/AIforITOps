@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: aifor-itops
+metadata:
+  template: aifor-itops@0.0.1-beta
+
+# Services are built and deployed via hooks (no local Docker required)
+# Images are built using ACR tasks in postprovision.ps1
+# Kubernetes deployments are applied in postdeploy.ps1
+
+hooks:
+  preprovision:
+    posix:
+      shell: sh
+      run: echo "Starting Azure resource provisioning..."
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: Write-Host "Starting Azure resource provisioning..."
+      continueOnError: false
+
+  postprovision:
+    posix:
+      shell: sh
+      run: ./infra/hooks/postprovision.sh
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: ./infra/hooks/postprovision.ps1
+      continueOnError: false
+
+  predeploy:
+    posix:
+      shell: sh
+      run: echo "Preparing Kubernetes deployments..."
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: Write-Host "Preparing Kubernetes deployments..."
+      continueOnError: false
+
+  postdeploy:
+    posix:
+      shell: sh
+      run: ./infra/hooks/postdeploy.sh
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: ./infra/hooks/postdeploy.ps1
+      continueOnError: false
