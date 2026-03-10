@@ -20,11 +20,18 @@ powershell -ex AllSigned -c "Invoke-RestMethod 'https://aka.ms/install-azd.ps1' 
 azd version
 ```
 
-3. **Install required tools** (if not already installed):
+3. **Clone the repository if you haven't already:**
+
+```bash
+git clone https://github.com/microsoft/AIforITOps.git
+cd AIforITOps
+```
+
+4. **Install required tools** (if not already installed):
    - Azure CLI: `winget install Microsoft.AzureCLI`
    - kubectl: `az aks install-cli`
 
-4. **Login to Azure**:
+5. **Login to Azure**:
 
 ```bash
 # Login to Azure with azd
