@@ -61,4 +61,4 @@ az cognitiveservices account show -g "{resource-group-name}"  -n "{openai-servic
 
 ## What's next?
 
-Bonus - [Bonus content](./Bonus.md).
+Exercise 5 - [Cost Management](./5-CostManagement.md).
