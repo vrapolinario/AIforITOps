@@ -44,6 +44,7 @@ az login
 
 ```bash
 # Create a new environment (use a descriptive name like "dev", "test", "workshop")
+# The environment name will be used as the Resource Group name in Azure, so choose something unique to avoid conflicts
 azd env new dev
 ```
 
