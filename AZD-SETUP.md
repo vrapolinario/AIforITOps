@@ -25,19 +25,15 @@ azd version
 ```bash
 git clone https://github.com/microsoft/AIforITOps.git
 cd AIforITOps
-```
-
-4. **macOS/Linux only: make azd hook scripts executable**:
-
-```bash
+# macOS/Linux only: make azd hook scripts executable
 chmod +x infra/hooks/*.sh
 ```
 
-5. **Install required tools** (if not already installed):
+4. **Install required tools** (if not already installed):
    - Azure CLI: `winget install Microsoft.AzureCLI`
    - kubectl: `az aks install-cli`
 
-6. **Login to Azure**:
+5. **Login to Azure**:
 
 ```bash
 # Login to Azure with azd
