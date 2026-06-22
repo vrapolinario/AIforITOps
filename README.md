@@ -23,6 +23,8 @@ This repository consists of a few important assets:
 
 For requests of new scenarios or issues with the workshop, please use the Issues tab to open a GitHub issue. We will do our best to look at all issues regularly.
 
+🤖 Check out the new **AI Agents for IT/Ops** [workshop](https://github.com/microsoft/AIAgentsforITOps). That workshop delivers a similar experience, but focused on managing AI Agents running on custom code and Microsoft Foundry: 
+
 ## Prerequisites
 
 - Azure subscription - you can obtain a free trial from [Azure Free Trial](https://aka.ms/azure-free-account)
