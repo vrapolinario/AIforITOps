@@ -25,6 +25,8 @@ azd version
 ```bash
 git clone https://github.com/microsoft/AIforITOps.git
 cd AIforITOps
+# macOS/Linux only: make azd hook scripts executable
+chmod +x infra/hooks/*.sh
 ```
 
 4. **Install required tools** (if not already installed):
