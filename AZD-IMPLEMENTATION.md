@@ -28,7 +28,8 @@
 - **servicebus.bicep** - Service Bus namespace and queue
 - **keyvault.bicep** - Key Vault with RBAC roles
 - **keyvault-secrets.bicep** - Secrets storage in Key Vault
-- **openai.bicep** - Azure OpenAI with model deployment
+- **foundry.bicep** - Microsoft Foundry resource, project, model deployment, and diagnostics
+- **monitoring.bicep** - Log Analytics workspace
 
 ### 3. Deployment Hooks
 
@@ -67,9 +68,9 @@ Located in `infra/hooks/`:
 Updated all SecretProviderClass files to use variable placeholders:
 - `k8s/keyvault-cosmosdb-spc.yaml`
 - `k8s/keyvault-servicebus-spc.yaml`
-- `k8s/keyvault-openai-spc.yaml`
-- `k8s/keyvault-openai-key-spc.yaml`
-- `k8s/keyvault-openai-deployment-spc.yaml`
+- `k8s/keyvault-foundry-spc.yaml`
+- `k8s/keyvault-foundry-api-key-spc.yaml`
+- `k8s/keyvault-foundry-model-deployment-spc.yaml`
 
 ## 🎯 How It Works
 
@@ -106,7 +107,7 @@ Updated all SecretProviderClass files to use variable placeholders:
 | `create-cosmosdb.ps1` | `core/cosmosdb.bicep` | ✅ Automated |
 | `create-servicebus.ps1` | `core/servicebus.bicep` | ✅ Automated |
 | `create-keyvault.ps1` | `core/keyvault.bicep` | ✅ Automated |
-| `deploy-openai.ps1` | `core/openai.bicep` | ✅ Automated |
+| `deploy-foundry.ps1` | `core/foundry.bicep` | ✅ Automated |
 | `upload-secrets-to-keyvault.ps1` | `core/keyvault-secrets.bicep` | ✅ Automated |
 | `update-secretstoreyaml.ps1` | `postprovision` hook | ✅ Automated |
 | `set-customlabel.ps1` | Integrated in `core/aks.bicep` | ✅ Automated |

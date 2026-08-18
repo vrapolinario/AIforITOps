@@ -9,8 +9,8 @@ param environmentName string
 @description('Primary location for all resources')
 param location string
 
-@description('Location for OpenAI resources (may differ from primary location)')
-param openAiLocation string = 'westus'
+@description('Location for Microsoft Foundry resources (may differ from primary location)')
+param foundryLocation string = 'westus'
 
 @description('Name of the resource group')
 param resourceGroupName string = ''
@@ -33,17 +33,26 @@ param serviceBusNamespaceName string = ''
 @description('Name of the Key Vault')
 param keyVaultName string = ''
 
-@description('Name of the OpenAI resource')
-param openAiResourceName string = ''
+@description('Name of the Microsoft Foundry resource')
+param foundryResourceName string = ''
 
-@description('OpenAI deployment name')
-param openAiDeploymentName string = 'gpt-4o'
+@description('Name of the Microsoft Foundry project')
+param foundryProjectName string = 'aifor-itops'
 
-@description('OpenAI model name')
-param openAiModelName string = 'gpt-4o'
+@description('Foundry model deployment name')
+param foundryModelDeploymentName string = 'gpt-4o'
 
-@description('OpenAI model version')
-param openAiModelVersion string = '2024-11-20'
+@description('Foundry model name')
+param foundryModelName string = 'gpt-4o'
+
+@description('Foundry model version')
+param foundryModelVersion string = '2024-11-20'
+
+@description('Foundry model deployment SKU')
+param foundryModelSkuName string = 'GlobalStandard'
+
+@description('Foundry model deployment capacity')
+param foundryModelCapacity int = 10
 
 @description('CosmosDB database name')
 param cosmosDbDatabaseName string = 'productsdb'
@@ -75,7 +84,7 @@ param principalId string = ''
 // Tags that should be applied to all resources
 var tags = {
   'azd-env-name': environmentName
-  'project': 'ai-for-itops'
+  project: 'ai-for-itops'
 }
 
 // Generate unique names for resources
@@ -167,17 +176,32 @@ module keyVault './core/keyvault.bicep' = {
   }
 }
 
-// Azure OpenAI
-module openAi './core/openai.bicep' = {
-  name: 'open-ai'
+// Monitoring
+module monitoring './core/monitoring.bicep' = {
+  name: 'monitoring'
   scope: rg
   params: {
-    name: !empty(openAiResourceName) ? openAiResourceName : '${abbrs.cognitiveServicesAccounts}${resourceToken}'
-    location: openAiLocation
+    name: 'log-${resourceToken}'
+    location: location
     tags: tags
-    deploymentName: openAiDeploymentName
-    modelName: openAiModelName
-    modelVersion: openAiModelVersion
+  }
+}
+
+// Microsoft Foundry
+module foundry './core/foundry.bicep' = {
+  name: 'foundry'
+  scope: rg
+  params: {
+    name: !empty(foundryResourceName) ? foundryResourceName : '${abbrs.cognitiveServicesAccounts}${resourceToken}'
+    location: foundryLocation
+    tags: tags
+    projectName: foundryProjectName
+    deploymentName: foundryModelDeploymentName
+    modelName: foundryModelName
+    modelVersion: foundryModelVersion
+    deploymentSkuName: foundryModelSkuName
+    deploymentCapacity: foundryModelCapacity
+    logAnalyticsWorkspaceId: monitoring.outputs.id
   }
 }
 
@@ -189,9 +213,9 @@ module keyVaultSecrets './core/keyvault-secrets.bicep' = {
     keyVaultName: keyVault.outputs.name
     cosmosDbConnectionString: cosmosDb.outputs.connectionString
     serviceBusConnectionString: serviceBus.outputs.connectionString
-    openAiEndpoint: openAi.outputs.endpoint
-    openAiKey: openAi.outputs.key
-    openAiDeploymentName: openAiDeploymentName
+    foundryEndpoint: foundry.outputs.inferenceEndpoint
+    foundryApiKey: foundry.outputs.key
+    foundryModelDeploymentName: foundryModelDeploymentName
   }
 }
 
@@ -218,6 +242,10 @@ output AZURE_SERVICEBUS_QUEUE string = serviceBusQueueName
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 
-output AZURE_OPENAI_RESOURCE_NAME string = openAi.outputs.name
-output AZURE_OPENAI_ENDPOINT string = openAi.outputs.endpoint
-output AZURE_OPENAI_DEPLOYMENT_NAME string = openAiDeploymentName
+output AZURE_FOUNDRY_RESOURCE_NAME string = foundry.outputs.name
+output AZURE_FOUNDRY_INFERENCE_ENDPOINT string = foundry.outputs.inferenceEndpoint
+output AZURE_FOUNDRY_MODEL_DEPLOYMENT_NAME string = foundryModelDeploymentName
+output AZURE_AI_PROJECT_ID string = foundry.outputs.projectId
+output AZURE_AI_PROJECT_NAME string = foundry.outputs.projectName
+output AZURE_AI_PROJECT_ENDPOINT string = foundry.outputs.projectEndpoint
+output AZURE_LOG_ANALYTICS_WORKSPACE_NAME string = monitoring.outputs.name

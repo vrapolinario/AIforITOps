@@ -20,6 +20,12 @@ powershell -ex AllSigned -c "Invoke-RestMethod 'https://aka.ms/install-azd.ps1' 
 azd version
 ```
 
+Use `winget upgrade Microsoft.Azd` if the installed version is earlier than 1.25.0. Install the Microsoft Foundry extension with the required user agent:
+
+```powershell
+$env:AZURE_DEV_USER_AGENT="microsoft_foundry_skill"; azd extension install microsoft.foundry
+```
+
 3. **Clone the repository if you haven't already:**
 
 ```bash
@@ -68,15 +74,21 @@ azd env set AZURE_AKS_CLUSTER_NAME myakscluster
 azd env set AZURE_COSMOSDB_ACCOUNT_NAME mycosmosdb
 azd env set AZURE_SERVICEBUS_NAMESPACE myservicebus123
 azd env set AZURE_KEY_VAULT_NAME mykv123
-azd env set AZURE_OPENAI_RESOURCE_NAME myopenai
+azd env set AZURE_FOUNDRY_RESOURCE_NAME myfoundry
 
 # Optional - AKS Configuration
 azd env set AZURE_AKS_NODE_POOL_VM_SIZE Standard_D2s_v3      # Default
 azd env set AZURE_AKS_NODE_POOL_NODE_COUNT 2                  # Default
 azd env set AZURE_AKS_KUBERNETES_VERSION ""                   # Leave empty for latest stable
 
-# Optional - OpenAI location (OpenAI is not available in all regions, check for availability and update as needed)
-azd env set AZURE_OPENAI_LOCATION westus
+# Optional - Microsoft Foundry project and model configuration
+azd env set AZURE_FOUNDRY_LOCATION westus
+azd env set AZURE_FOUNDRY_PROJECT_NAME aifor-itops
+azd env set AZURE_FOUNDRY_MODEL_DEPLOYMENT_NAME gpt-4o
+azd env set AZURE_FOUNDRY_MODEL_NAME gpt-4o
+azd env set AZURE_FOUNDRY_MODEL_VERSION 2024-11-20
+azd env set AZURE_FOUNDRY_MODEL_SKU_NAME GlobalStandard
+azd env set AZURE_FOUNDRY_MODEL_CAPACITY 10
 
 # View all configured values
 azd env get-values
@@ -91,7 +103,7 @@ azd up
 
 This single command will:
 
-- Create all Azure resources (ACR, AKS, CosmosDB, Service Bus, Key Vault, OpenAI)
+- Create all Azure resources, including Microsoft Foundry, its default project and model deployment, and Log Analytics diagnostics
 - Build and push container images to ACR
 - Configure Kubernetes manifests with resource details
 - Deploy applications to AKS

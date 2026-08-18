@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace StoreFront.Controllers
 {
@@ -13,49 +9,54 @@ namespace StoreFront.Controllers
     [Route("api/[controller]")]
     public class ChatbotController : ControllerBase
     {
-    private readonly ILogger<ChatbotController> _logger;
+        private readonly ILogger<ChatbotController> _logger;
+        private readonly HttpClient _httpClient;
 
-    public ChatbotController(ILogger<ChatbotController> logger)
+        public ChatbotController(ILogger<ChatbotController> logger, HttpClient httpClient)
         {
             _logger = logger;
+            _httpClient = httpClient;
         }
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ChatbotRequest request)
     {
-            _logger.LogInformation($"ChatbotController: Received POST /api/chatbot request. Question: {request?.Question}");
+            if (string.IsNullOrWhiteSpace(request?.Question))
+            {
+                return BadRequest(new ChatbotResponse { Answer = "Please enter a question." });
+            }
+
+            _logger.LogInformation("ChatbotController: Received POST /api/chatbot request");
             try
             {
                 try {
-                    _logger.LogInformation("ChatbotController: Reading OpenAI secrets from mounted files...");
-                    string endpoint = System.IO.File.ReadAllText("/mnt/secrets-store-openai/OpenAIEndpoint").Trim();
-                    string apiKey = System.IO.File.ReadAllText("/mnt/secrets-store-openai-key/OpenAIAPIKey").Trim();
-                    string deployment = System.IO.File.ReadAllText("/mnt/secrets-store-openai-deployment/OpenAIDeploymentName").Trim();
-                    _logger.LogInformation($"ChatbotController: endpoint={endpoint}, deployment={deployment}, apiKey length={apiKey?.Length}");
-
-                    using var client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-                    var url = $"{endpoint}/openai/deployments/{deployment}/chat/completions?api-version=2023-03-15-preview";
-                    _logger.LogInformation($"ChatbotController: OpenAI request URL: {url}");
+                    _logger.LogInformation("ChatbotController: Reading Foundry secrets from mounted files...");
+                    string endpoint = System.IO.File.ReadAllText("/mnt/secrets-store-foundry/FoundryEndpoint").Trim();
+                    string apiKey = System.IO.File.ReadAllText("/mnt/secrets-store-foundry-api-key/FoundryApiKey").Trim();
+                    string deployment = System.IO.File.ReadAllText("/mnt/secrets-store-foundry-model-deployment/FoundryModelDeployment").Trim();
+                    var url = $"{endpoint.TrimEnd('/')}/openai/v1/chat/completions";
+                    _logger.LogInformation("ChatbotController: Calling Foundry model deployment {Deployment}", deployment);
                     var payload = new
                     {
+                        model = deployment,
                         messages = new[] {
                             new { role = "system", content = "You are a helpful assistant for the StoreFront. Only answer questions about furniture products sold in the store. If asked about anything else, reply: 'Sorry, I can only answer questions about furniture products.'" },
                             new { role = "user", content = request.Question }
                         },
                         max_tokens = 256
                     };
-                    var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync(url, content);
-                    _logger.LogInformation($"ChatbotController: OpenAI response status code: {response.StatusCode}");
+                    using var message = new HttpRequestMessage(HttpMethod.Post, url);
+                    message.Headers.Add("api-key", apiKey);
+                    message.Content = JsonContent.Create(payload);
+                    using var response = await _httpClient.SendAsync(message, HttpContext.RequestAborted);
+                    _logger.LogInformation("ChatbotController: Foundry response status code: {StatusCode}", response.StatusCode);
                     response.EnsureSuccessStatusCode();
                     var json = await response.Content.ReadAsStringAsync();
-                    _logger.LogInformation($"ChatbotController: OpenAI response JSON: {json}");
                     using var doc = JsonDocument.Parse(json);
                     var answer = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
-                    _logger.LogInformation($"ChatbotController: OpenAI answer: {answer}");
+                    _logger.LogInformation("ChatbotController: Foundry model returned an answer");
                     return Ok(new ChatbotResponse { Answer = answer ?? "Sorry, I couldn't answer your question." });
                 } catch (Exception innerEx) {
-                    _logger.LogError(innerEx, "ChatbotController: Error reading secrets or calling OpenAI API");
+                    _logger.LogError(innerEx, "ChatbotController: Error reading secrets or calling the Foundry model");
                     throw;
                 }
             }
@@ -69,10 +70,10 @@ namespace StoreFront.Controllers
 
     public class ChatbotRequest
     {
-        public string Question { get; set; }
+        public string Question { get; set; } = string.Empty;
     }
     public class ChatbotResponse
     {
-        public string Answer { get; set; }
+        public string Answer { get; set; } = string.Empty;
     }
 }

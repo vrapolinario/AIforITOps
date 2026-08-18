@@ -28,15 +28,15 @@ Run the `.\scripts\create-servicebus.ps1` script. This script will create a new 
 
 Run the `.\scripts\create-keyvault.ps1` script. This script creates the Azure Key Vault. It also configures the user account used in this process (the account used to log into the Azure subscription in the PowerShell session) as Key Vault Secrets Officer. Next, the script will grant the User-Assigned Managed Identity associated to the AKS cluster the Key Vault Secrets User role. By doing this, we ensure that the AKS cluster can access the secrets stored in the Key Vault.
 
-### 1.6 Deploy Azure OpenAI
+### 1.6 Deploy Microsoft Foundry
 
-Run the `.\scripts\deploy-openai.ps1` script. This script will deploy the Azure OpenAI service and the Model deployment for the service. Unless you changed the `.\scripts\env.conf` file, the script will deploy a gpt-4o model.
+Run the `.\scripts\deploy-foundry.ps1` script. This script creates a Microsoft Foundry resource, the default Foundry project, and its model deployment. Unless you changed `.\scripts\env.conf`, the script deploys `gpt-4o` using the `GlobalStandard` SKU.
 
 ### 1.7 Upload secrets to Azure Key Vault
 
-Next, we need to add the CosmosDB and Service Bus connection strings, as well as the Azure OpenAI settings as secrets on Azure Key Vault.
+Next, add the CosmosDB and Service Bus connection strings and Microsoft Foundry model settings as secrets in Azure Key Vault.
 
-For that, run the `.\scripts\upload-secrets-to-keyvault.ps1` script. This script will create five new secrets on Azure Key Vault, one for the CosmosDB connection string, another one for the Service Bus connection string, one for the OpenAI API key, one for the OpenAI endpoint, and one for the OpenAI deployment name. All these contain sensitive information, so they should be considered secrets.
+Run `.\scripts\upload-secrets-to-keyvault.ps1`. It creates five secrets: the CosmosDB and Service Bus connection strings, the Foundry API key, the Foundry inference endpoint, and the Foundry model deployment name.
 
 ## 4 Deploy the application
 
@@ -44,7 +44,7 @@ With the environment in Azure properly configured, it is now time to deploy the 
 
 ### 2.1 Update SecretProviderClass specs
 
- The Key Vault SecretProviderClass YAML specification for all the secrets used in this exercise need to be updated with the Key Vault name, User-Assigned Managed Identity ID and Tenant ID values. These are unique for your environment. To create the proper files, run the `.\scripts\update-secretstoreyaml.ps1` script. This script will read the `.\scripts\env.conf` file and query the Azure subscription you are using. Then the script will create a new version of `.\k8s\keyvault-cosmosdb-spc.yaml`, `.\k8s\keyvault-servicebus-spc.yaml`, `.\k8s\keyvault-openai-spc.yaml`, `.\k8s\keyvault-openai-key-spc.yaml`, and `.\k8s\keyvault-openai-deployment-spc.yaml` with 'final' added to the file name.
+ The Key Vault SecretProviderClass YAML specifications need the Key Vault name, user-assigned managed identity client ID, and tenant ID for your environment. Run `.\scripts\update-secretstoreyaml.ps1` to generate `.final.yaml` files for CosmosDB, Service Bus, and the three Foundry secrets.
 
  Note: For troubleshooting purposes, we are using one SecretProviderClass YAML specification for each secret on Azure Key Vault. That is not necessary in a production environment - however, using multiple SecretProviderClass instances can help isolate issues and is not a security compromise.
 
@@ -58,9 +58,9 @@ kubectl apply -f ./k8s/cosmosdb-configmap.yaml
 kubectl apply -f ./k8s/servicebus-configmap.yaml
 kubectl apply -f ./k8s/keyvault-cosmosdb-spc.final.yaml
 kubectl apply -f ./k8s/keyvault-servicebus-spc.final.yaml
-kubectl apply -f ./k8s/keyvault-openai-spc.final.yaml
-kubectl apply -f ./k8s/keyvault-openai-key-spc.final.yaml
-kubectl apply -f ./k8s/keyvault-openai-deployment-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-foundry-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-foundry-api-key-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-foundry-model-deployment-spc.final.yaml
 kubectl apply -f ./k8s/storefront-deployment.yaml
 kubectl apply -f ./k8s/storefront-service.yaml
 kubectl apply -f ./k8s/adminsite-deployment.yaml

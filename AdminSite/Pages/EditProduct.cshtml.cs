@@ -1,28 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
 using AdminSite.Models;
-using Azure;
-using Azure.AI.Inference;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using AdminSite.Services;
 using System.Text.Json;
-using System.Text;
-using Azure;
 
  [IgnoreAntiforgeryToken]
 public class EditProductModel : PageModel
 {
     private readonly ILogger<EditProductModel> _logger;
+    private readonly FoundryChatClient _foundryChatClient;
     [BindProperty]
     public Product Product { get; set; } = new Product();
 
-    public EditProductModel(ILogger<EditProductModel> logger)
+    public EditProductModel(ILogger<EditProductModel> logger, FoundryChatClient foundryChatClient)
     {
         _logger = logger;
+        _foundryChatClient = foundryChatClient;
     }
-
-    // Removed OpenAI endpoint handler
 
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> OnPostGenerateDescriptionAsync()
@@ -36,30 +30,7 @@ public class EditProductModel : PageModel
             _logger.LogInformation($"Request body: {body}");
             var name = JsonDocument.Parse(body).RootElement.GetProperty("name").GetString();
 
-            var apiKey = System.IO.File.ReadAllText("/mnt/secrets-store-openai-key/OpenAIAPIKey");
-            var endpoint = System.IO.File.ReadAllText("/mnt/secrets-store-openai/OpenAIEndpoint");
-            var deploymentName = System.IO.File.ReadAllText("/mnt/secrets-store-openai-deployment/OpenAIDeploymentName");
-
-            var client = new ChatCompletionsClient(
-                new Uri($"{endpoint}/openai/deployments/{deploymentName}"),
-                new AzureKeyCredential(apiKey),
-                new AzureAIInferenceClientOptions()
-            );
-
-            var requestOptions = new ChatCompletionsOptions()
-            {
-                Messages =
-                {
-                    new ChatRequestUserMessage($"Write a compelling product description for: {name}")
-                },
-                MaxTokens = 100,
-                Temperature = 0.7f,
-                NucleusSamplingFactor = 1.0f,
-                Model = deploymentName
-            };
-
-            Response<ChatCompletions> response = client.Complete(requestOptions);
-            var desc = response.Value.Content;
+            var desc = await _foundryChatClient.GenerateProductDescriptionAsync(name, HttpContext.RequestAborted);
             _logger.LogInformation($"AI description response: {desc}");
             return new JsonResult(new { description = desc });
         }

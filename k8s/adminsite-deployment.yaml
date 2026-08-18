@@ -59,14 +59,14 @@ spec:
         - name: secrets-store-sb
           mountPath: /mnt/secrets-store-sb
           readOnly: true
-        - name: secrets-store-openai
-          mountPath: /mnt/secrets-store-openai
+        - name: secrets-store-foundry
+          mountPath: /mnt/secrets-store-foundry
           readOnly: true
-        - name: secrets-store-openai-key
-          mountPath: /mnt/secrets-store-openai-key
+        - name: secrets-store-foundry-api-key
+          mountPath: /mnt/secrets-store-foundry-api-key
           readOnly: true
-        - name: secrets-store-openai-deployment
-          mountPath: /mnt/secrets-store-openai-deployment
+        - name: secrets-store-foundry-model-deployment
+          mountPath: /mnt/secrets-store-foundry-model-deployment
           readOnly: true
       volumes:
       - name: secrets-store
@@ -81,21 +81,21 @@ spec:
           readOnly: true
           volumeAttributes:
             secretProviderClass: keyvault-servicebus
-      - name: secrets-store-openai
+      - name: secrets-store-foundry
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: keyvault-openai
-      - name: secrets-store-openai-key
+            secretProviderClass: keyvault-foundry
+      - name: secrets-store-foundry-api-key
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: keyvault-openai-key
-      - name: secrets-store-openai-deployment
+            secretProviderClass: keyvault-foundry-api-key
+      - name: secrets-store-foundry-model-deployment
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: keyvault-openai-deployment
+            secretProviderClass: keyvault-foundry-model-deployment
