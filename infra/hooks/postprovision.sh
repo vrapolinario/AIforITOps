@@ -98,9 +98,9 @@ done
 SPC_FILES=(
     "keyvault-cosmosdb-spc.yaml"
     "keyvault-servicebus-spc.yaml"
-    "keyvault-openai-spc.yaml"
-    "keyvault-openai-key-spc.yaml"
-    "keyvault-openai-deployment-spc.yaml"
+    "keyvault-foundry-spc.yaml"
+    "keyvault-foundry-api-key-spc.yaml"
+    "keyvault-foundry-model-deployment-spc.yaml"
 )
 
 for file in "${SPC_FILES[@]}"; do

@@ -174,7 +174,7 @@ azd provision
 
 ---
 
-## Error: OpenAI Service Not Available
+## Error: Foundry Model Not Available
 
 ### Symptoms
 ```
@@ -182,12 +182,15 @@ ResourceNotAvailable: The requested resource is not available in location 'eastu
 ```
 
 ### Cause
-Azure OpenAI is not available in all regions or requires approval.
+The selected model, version, or deployment SKU is unavailable in the configured Foundry region, or the subscription has insufficient quota.
 
 ### Solution
 ```bash
-# Use a region where OpenAI is available
-azd env set AZURE_OPENAI_LOCATION westus
+# Select a region where the model and SKU are available
+azd env set AZURE_FOUNDRY_LOCATION westus
+
+# Reduce capacity if the region has less available quota
+azd env set AZURE_FOUNDRY_MODEL_CAPACITY 1
 
 azd provision
 ```

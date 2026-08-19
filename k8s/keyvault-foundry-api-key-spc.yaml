@@ -1,7 +1,7 @@
 apiVersion: secrets-store.csi.x-k8s.io/v1
 kind: SecretProviderClass
 metadata:
-  name: keyvault-openai-deployment
+  name: keyvault-foundry-api-key
   namespace: ai-demo
 spec:
   provider: azure
@@ -13,7 +13,7 @@ spec:
     objects:  |
       array:
         - |
-          objectName: openai-deployment
+          objectName: foundry-api-key
           objectType: secret
-          objectAlias: OpenAIDeploymentName
+          objectAlias: FoundryApiKey
     tenantId: ${TENANT_ID}

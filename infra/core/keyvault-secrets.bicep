@@ -9,15 +9,15 @@ param cosmosDbConnectionString string
 @secure()
 param serviceBusConnectionString string
 
-@description('OpenAI endpoint')
-param openAiEndpoint string
+@description('Microsoft Foundry inference endpoint')
+param foundryEndpoint string
 
-@description('OpenAI API key')
+@description('Microsoft Foundry API key')
 @secure()
-param openAiKey string
+param foundryApiKey string
 
-@description('OpenAI deployment name')
-param openAiDeploymentName string
+@description('Microsoft Foundry model deployment name')
+param foundryModelDeploymentName string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyVaultName
@@ -39,32 +39,32 @@ resource serviceBusSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   }
 }
 
-resource openAiEndpointSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+resource foundryEndpointSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
-  name: 'openai-endpoint'
+  name: 'foundry-endpoint'
   properties: {
-    value: openAiEndpoint
+    value: foundryEndpoint
   }
 }
 
-resource openAiKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+resource foundryApiKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
-  name: 'openai-key'
+  name: 'foundry-api-key'
   properties: {
-    value: openAiKey
+    value: foundryApiKey
   }
 }
 
-resource openAiDeploymentSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+resource foundryModelDeploymentSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
   parent: keyVault
-  name: 'openai-deployment'
+  name: 'foundry-model-deployment'
   properties: {
-    value: openAiDeploymentName
+    value: foundryModelDeploymentName
   }
 }
 
 output cosmosDbSecretName string = cosmosDbSecret.name
 output serviceBusSecretName string = serviceBusSecret.name
-output openAiEndpointSecretName string = openAiEndpointSecret.name
-output openAiKeySecretName string = openAiKeySecret.name
-output openAiDeploymentSecretName string = openAiDeploymentSecret.name
+output foundryEndpointSecretName string = foundryEndpointSecret.name
+output foundryApiKeySecretName string = foundryApiKeySecret.name
+output foundryModelDeploymentSecretName string = foundryModelDeploymentSecret.name

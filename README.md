@@ -17,7 +17,7 @@ Welcome to the AI for IT/Ops workshop! This repository contains all the material
 
 This repository consists of a few important assets:
 
-- A sample e-commerce application that leverages Azure OpenAI to provide AI-powered product recommendations.
+- A sample e-commerce application that uses a Microsoft Foundry project and model deployment to provide AI-powered product descriptions and a furniture-focused chatbot.
 - Instructions on how to deploy the sample application using Azure Developer CLI (azd) and Infrastructure as Code (Bicep). Use this option to quickly deploy the environment and jump into the workshop exercises.
 - Instructions on how to deploy the sample application using PowerShell scripts. Use this option to understand the individual steps necessary to deploy the environment.
 
@@ -28,7 +28,7 @@ For requests of new scenarios or issues with the workshop, please use the Issues
 ## Prerequisites
 
 - Azure subscription - you can obtain a free trial from [Azure Free Trial](https://aka.ms/azure-free-account)
-- Azure Developer CLI (azd) installed and logged in
+- Azure Developer CLI (azd) 1.25.0 or later installed and logged in
 - PowerShell 7.x installed (if using PowerShell scripts)
 - Azure CLI (`az`) installed and logged in
 - Kubernetes CLI (`kubectl`) installed

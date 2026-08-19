@@ -23,9 +23,9 @@ kubectl apply -f ./k8s/cosmosdb-configmap.yaml
 kubectl apply -f ./k8s/servicebus-configmap.yaml
 kubectl apply -f ./k8s/keyvault-cosmosdb-spc.final.yaml
 kubectl apply -f ./k8s/keyvault-servicebus-spc.final.yaml
-kubectl apply -f ./k8s/keyvault-openai-spc.final.yaml
-kubectl apply -f ./k8s/keyvault-openai-key-spc.final.yaml
-kubectl apply -f ./k8s/keyvault-openai-deployment-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-foundry-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-foundry-api-key-spc.final.yaml
+kubectl apply -f ./k8s/keyvault-foundry-model-deployment-spc.final.yaml
 kubectl apply -f ./k8s/storefront-deployment.yaml
 kubectl apply -f ./k8s/storefront-service.yaml
 kubectl apply -f ./k8s/adminsite-deployment.yaml

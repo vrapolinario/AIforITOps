@@ -8,8 +8,8 @@
     "location": {
       "value": "${AZURE_LOCATION}"
     },
-    "openAiLocation": {
-      "value": "${AZURE_OPENAI_LOCATION=westus}"
+    "foundryLocation": {
+      "value": "${AZURE_FOUNDRY_LOCATION=westus}"
     },
     "managedIdentityName": {
       "value": "${AZURE_MANAGED_IDENTITY_NAME=}"
@@ -29,8 +29,26 @@
     "keyVaultName": {
       "value": "${AZURE_KEY_VAULT_NAME=}"
     },
-    "openAiResourceName": {
-      "value": "${AZURE_OPENAI_RESOURCE_NAME=}"
+    "foundryResourceName": {
+      "value": "${AZURE_FOUNDRY_RESOURCE_NAME=}"
+    },
+    "foundryProjectName": {
+      "value": "${AZURE_FOUNDRY_PROJECT_NAME=aifor-itops}"
+    },
+    "foundryModelDeploymentName": {
+      "value": "${AZURE_FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o}"
+    },
+    "foundryModelName": {
+      "value": "${AZURE_FOUNDRY_MODEL_NAME=gpt-4o}"
+    },
+    "foundryModelVersion": {
+      "value": "${AZURE_FOUNDRY_MODEL_VERSION=2024-11-20}"
+    },
+    "foundryModelSkuName": {
+      "value": "${AZURE_FOUNDRY_MODEL_SKU_NAME=GlobalStandard}"
+    },
+    "foundryModelCapacity": {
+      "value": "${AZURE_FOUNDRY_MODEL_CAPACITY=10}"
     },
     "aksKubernetesVersion": {
       "value": "${AZURE_AKS_KUBERNETES_VERSION=}"

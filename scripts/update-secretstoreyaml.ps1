@@ -30,12 +30,12 @@ $cosmosdbYamlPath = Join-Path $k8sDir 'keyvault-cosmosdb-spc.yaml'
 $cosmosdbYamlFinalPath = Join-Path $k8sDir 'keyvault-cosmosdb-spc.final.yaml'
 $servicebusYamlPath = Join-Path $k8sDir 'keyvault-servicebus-spc.yaml'
 $servicebusYamlFinalPath = Join-Path $k8sDir 'keyvault-servicebus-spc.final.yaml'
-$openaiYamlPath = Join-Path $k8sDir 'keyvault-openai-spc.yaml'
-$openaiYamlFinalPath = Join-Path $k8sDir 'keyvault-openai-spc.final.yaml'
-$openaikeyYamlPath = Join-Path $k8sDir 'keyvault-openai-key-spc.yaml'
-$openaikeyYamlFinalPath = Join-Path $k8sDir 'keyvault-openai-key-spc.final.yaml'
-$openaideploymentYamlPath = Join-Path $k8sDir 'keyvault-openai-deployment-spc.yaml'
-$openaideploymentYamlFinalPath = Join-Path $k8sDir 'keyvault-openai-deployment-spc.final.yaml'
+$foundryYamlPath = Join-Path $k8sDir 'keyvault-foundry-spc.yaml'
+$foundryYamlFinalPath = Join-Path $k8sDir 'keyvault-foundry-spc.final.yaml'
+$foundryApiKeyYamlPath = Join-Path $k8sDir 'keyvault-foundry-api-key-spc.yaml'
+$foundryApiKeyYamlFinalPath = Join-Path $k8sDir 'keyvault-foundry-api-key-spc.final.yaml'
+$foundryModelDeploymentYamlPath = Join-Path $k8sDir 'keyvault-foundry-model-deployment-spc.yaml'
+$foundryModelDeploymentYamlFinalPath = Join-Path $k8sDir 'keyvault-foundry-model-deployment-spc.final.yaml'
 
 # Update keyvault-cosmosdb-spc.yaml
 $cosmosdbYaml = Get-Content $cosmosdbYamlPath -Raw
@@ -51,26 +51,26 @@ $servicebusYaml = $servicebusYaml -replace '\$\{TENANT_ID\}', $tenantId
 $servicebusYaml = $servicebusYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
 Set-Content $servicebusYamlFinalPath $servicebusYaml
 
-# Update keyvault-openai-spc.yaml
-$openaiYaml = Get-Content $openaiYamlPath -Raw
-$openaiYaml = $openaiYaml -replace '\$\{KEY_VAULT_NAME\}', $keyVaultName
-$openaiYaml = $openaiYaml -replace '\$\{TENANT_ID\}', $tenantId
-$openaiYaml = $openaiYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
-Set-Content $openaiYamlFinalPath $openaiYaml
+# Update keyvault-foundry-spc.yaml
+$foundryYaml = Get-Content $foundryYamlPath -Raw
+$foundryYaml = $foundryYaml -replace '\$\{KEY_VAULT_NAME\}', $keyVaultName
+$foundryYaml = $foundryYaml -replace '\$\{TENANT_ID\}', $tenantId
+$foundryYaml = $foundryYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
+Set-Content $foundryYamlFinalPath $foundryYaml
 
-# Update keyvault-openai-key-spc.yaml
-$openaikeyYaml = Get-Content $openaikeyYamlPath -Raw
-$openaikeyYaml = $openaikeyYaml -replace '\$\{KEY_VAULT_NAME\}', $keyVaultName
-$openaikeyYaml = $openaikeyYaml -replace '\$\{TENANT_ID\}', $tenantId
-$openaikeyYaml = $openaikeyYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
-Set-Content $openaikeyYamlFinalPath $openaikeyYaml
+# Update keyvault-foundry-api-key-spc.yaml
+$foundryApiKeyYaml = Get-Content $foundryApiKeyYamlPath -Raw
+$foundryApiKeyYaml = $foundryApiKeyYaml -replace '\$\{KEY_VAULT_NAME\}', $keyVaultName
+$foundryApiKeyYaml = $foundryApiKeyYaml -replace '\$\{TENANT_ID\}', $tenantId
+$foundryApiKeyYaml = $foundryApiKeyYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
+Set-Content $foundryApiKeyYamlFinalPath $foundryApiKeyYaml
 
-# Update keyvault-openai-deployment-spc.yaml
-$openaideploymentYaml = Get-Content $openaideploymentYamlPath -Raw
-$openaideploymentYaml = $openaideploymentYaml -replace '\$\{KEY_VAULT_NAME\}', $keyVaultName
-$openaideploymentYaml = $openaideploymentYaml -replace '\$\{TENANT_ID\}', $tenantId
-$openaideploymentYaml = $openaideploymentYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
-Set-Content $openaideploymentYamlFinalPath $openaideploymentYaml
+# Update keyvault-foundry-model-deployment-spc.yaml
+$foundryModelDeploymentYaml = Get-Content $foundryModelDeploymentYamlPath -Raw
+$foundryModelDeploymentYaml = $foundryModelDeploymentYaml -replace '\$\{KEY_VAULT_NAME\}', $keyVaultName
+$foundryModelDeploymentYaml = $foundryModelDeploymentYaml -replace '\$\{TENANT_ID\}', $tenantId
+$foundryModelDeploymentYaml = $foundryModelDeploymentYaml -replace '\$\{MANAGED_IDENTITY_CLIENT_ID\}', $managedIdentityClientId
+Set-Content $foundryModelDeploymentYamlFinalPath $foundryModelDeploymentYaml
 
 Write-Host "Updated SecretProviderClass YAMLs created in k8s folder."
 

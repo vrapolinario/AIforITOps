@@ -1,6 +1,6 @@
 # Exercise 5 - Azure AI services Cost Management
 
-> Note: It takes 24 hours for cost data from Azure services to show in the Cost Management + Billing dash If you just deployed this workshop environment, you might want to wait until you start this exercise.
+> Note: It takes 24 hours for cost data from Azure services to show in the Cost Management + Billing dashboard. If you just deployed this workshop environment, you might want to wait until you start this exercise.
 
 You’ve deployed the AI-enabled application and its components. Leadership now asks: *“How much are these AI workloads costing us, and how do we keep them under control as usage grows?”*
 
@@ -43,7 +43,7 @@ Use a simple scheme such as:
 
 ### Tag key AI resources
 
-- In the Azure portal, navigate to the Azure OpenAI resource.
+- In the Azure portal, navigate to the Microsoft Foundry resource.
 - In the left-hand menu, select Tags.  
 - Add a new tag:
   - Name: `CostCenter`  
@@ -60,11 +60,11 @@ Use a simple scheme such as:
 
 > Note: It may take some time for the tag to be listed in the filter options after you create it.
 
-## Analyze Azure OpenAI usage and cost drivers
+## Analyze Microsoft Foundry usage and cost drivers
 
-Now you’ll focus specifically on Azure OpenAI and understand how usage patterns affect cost.
+Now you’ll focus specifically on Microsoft Foundry and understand how usage patterns affect cost.
 
-### Isolate Azure OpenAI costs
+### Isolate Microsoft Foundry costs
 
 - In Cost analysis, keep the scope to your workshop resource group or subscription.
 - Add a Filter:

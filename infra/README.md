@@ -17,7 +17,8 @@ infra/
 │   ├── servicebus.bicep   # Service Bus with queue
 │   ├── keyvault.bicep     # Key Vault with RBAC
 │   ├── keyvault-secrets.bicep  # Secrets storage
-│   └── openai.bicep       # Azure OpenAI with deployment
+│   ├── foundry.bicep      # Foundry project, model, and diagnostics
+│   └── monitoring.bicep   # Log Analytics workspace
 └── hooks/                 # Deployment lifecycle hooks
     ├── postprovision.ps1  # Configure after infrastructure
     ├── postprovision.sh
@@ -79,8 +80,12 @@ The main.bicep file outputs these values to azd environment:
 - `AZURE_COSMOSDB_ACCOUNT_NAME` - Cosmos DB account
 - `AZURE_SERVICEBUS_NAMESPACE` - Service Bus namespace
 - `AZURE_KEY_VAULT_NAME` - Key Vault name
-- `AZURE_OPENAI_RESOURCE_NAME` - OpenAI resource
-- `AZURE_OPENAI_ENDPOINT` - OpenAI endpoint
+- `AZURE_FOUNDRY_RESOURCE_NAME` - Microsoft Foundry resource
+- `AZURE_FOUNDRY_INFERENCE_ENDPOINT` - Model inference endpoint
+- `AZURE_FOUNDRY_MODEL_DEPLOYMENT_NAME` - Model deployment
+- `AZURE_AI_PROJECT_NAME` - Foundry project
+- `AZURE_AI_PROJECT_ENDPOINT` - Foundry project endpoint
+- `AZURE_LOG_ANALYTICS_WORKSPACE_NAME` - Monitoring workspace
 - And more...
 
 ## Customization
@@ -124,7 +129,7 @@ Edit the corresponding module file in `core/`:
 
 - Want different AKS node size? → Set `AZURE_AKS_NODE_POOL_VM_SIZE` or edit `core/aks.bicep`
 - Need different Cosmos DB consistency? → Edit `core/cosmosdb.bicep`
-- Want different OpenAI model? → Edit parameters in `main.bicep`
+- Want a different model? → Set the `AZURE_FOUNDRY_MODEL_*` azd environment values
 
 ### Add New Resources
 
