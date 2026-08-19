@@ -1,11 +1,11 @@
 # Exercise 1 - Identity
 
-In this exercise we will deploy the sample E-commerce application. This application is deployed in an Azure Kubernetes Service cluster. However, the application uses other Azure services such as CosmosDB, Service Bus, and Azure OpenAI. To access these services, the AKS cluster needs access to sensitive information such as connection strings, passwords, and access keys. Instead of hardcoding these values into the application source code, it's a best practice to store them in a secure location - such as Azure Key Vault - and ensure that only the nodes in your AKS cluster can access it.
+In this exercise we will deploy the sample E-commerce application. This application is deployed in an Azure Kubernetes Service cluster. However, the application uses other Azure services such as CosmosDB, Service Bus, and Microsoft Foundry. To access these services, the AKS cluster needs access to sensitive information such as connection strings, passwords, and access keys. Instead of hardcoding these values into the application source code, it's a best practice to store them in a secure location - such as Azure Key Vault - and ensure that only the nodes in your AKS cluster can access it.
 
 In this exercise you will:
 
 - Ensure only the AKS cluster has access to the secrets via Managed Identity.
-- Test the application connection to Azure OpenAI.
+- Test the application connection to Microsoft Foundry.
 
 ## Review secrets on Azure Key Vault
 
@@ -15,11 +15,11 @@ As part of the deployment, we need to ensure that sensitive information such as 
 - Navigate to the resource group and open the Azure Key Vault.
 - Expand Objects in the left-hand side menu and click Secrets.
 - Make sure you have the following secrets:
-  - CosmosDBConnectionString
-  - OpenAIAPIKey
-  - OpenAIDeploymentName
-  - OpenAIEndpoint
-  - ServiceBusConnectionString
+  - cosmosdb-connectionstring
+  - foundry-api-key
+  - foundry-endpoint
+  - foundry-model-deployment
+  - servicebus-connectionstring
 - To validate the secret content, open one of the secrets, and click the current version. On the Secret version page, click Show Secret Value. Notice that it contains the value expected for the secret you selected.
 
 These secrets are used by the application to communicate with the Azure services. Instead of hardcoding this information into the application code, our developer counterparts used placeholders (variables) that expect these values to be replaced at deployment time.
@@ -75,7 +75,7 @@ All Kubernetes resources can be found in the K8s folder from the application:
 - Click the Admin tab.
 - Click Add New Product.
 - On the Add Product page, type "Modern Gray Sofa" on the Name text box.
-- Click the AI generated description button. Notice that the Description is filled out for you by the Azure OpenAI service.
+- Click the AI generated description button. Notice that the Description is filled out for you by the Microsoft Foundry service.
 - Enter 1099 for the price of the product then click the Choose File button next to Product Image.
 - On the pop-up to select the file, navigate `\GitHub\AIforITOps\StoreSampleMedia` and select the ModernSofaGray file. Enter 10 for quantity and click Add.
 - Open the Home page for the StoreFront. You might need to refresh the page to see the newly added product.
@@ -84,12 +84,12 @@ All Kubernetes resources can be found in the K8s folder from the application:
 
 - On the StoreFront page, click the Chat option on the lower, right-hand corner.
 - On the Ask me anything box, type "What team has been named champions of the 2025 Formula 1 season" and click the Send button.
-- Notice that the application has been configured to limit the Azure OpenAI responses to furniture related questions only.
+- Notice that the application has been configured to limit the Microsoft Foundry responses to furniture related questions only.
 - On Windows Explorer, navigate to `.\StoreFront\Controllers\ChatbotController.cs` and open that file with Visual Studio Code.
 - This file represents the configuration of the Chatbot for the StoreFront.
 - On Visual Studio Code, navigate to line 42 and note the system role attributed to the ChatBot.
 
-This information is sent to the Azure OpenAI service when the webpage has a request for chat. Later in the workshop, we will explore how to configure Prompt Shielding, which is configured as part of the Azure OpenAI service model deployment.
+This information is sent to the Microsoft Foundry service when the webpage has a request for chat. Later in the workshop, we will explore how to configure Prompt Shielding, which is configured as part of the Microsoft Foundry service model deployment.
 
 - Close Visual Studio Code.
 
